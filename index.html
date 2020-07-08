@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<head>
+	<h1>
+<strong>New and Improved Snake Game!</strong>
+</h1>
+	<h3>
+<em>Creators: Grace, John, Khin, Yuka</em>
+</h3>
+<p>
+Play the snake game! Control the snake’s movements using the up, down, left, 
+and right keys, and eat the apples. Each time you eat an apple, the snake will grow longer, so watch out! You lose if your snake runs into itself or into the border. 
+</p>
+</head>
+<body>
+<style>
+body {
+background-color: rgb(204, 224, 255);
+}
+
+h1 {
+color: rgb(0, 51, 128);
+text-align: center;
+font-family: Arial;
+font-size: 50px;
+font-weight: 500px;
+}
+
+h3 {
+color: rgb(77, 148, 255);
+text-align: center;
+font-family: Arial;
+font-size: 20px;
+}
+
+p {
+color: rgb(0, 51, 102);
+text-align: center;
+font-family: Arial;
+font-size: 15px;
+}
+
+</style>
+</body> 
+</html> 
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Snake</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="470" height="420"></canvas>
+
+    <script>
+      var canvas, ctx;
+
+      window.onload = function() {
+        canvas = document.getElementById("canvas");
+        ctx = canvas.getContext("2d");
+
+        document.addEventListener("keydown", keyDownEvent);
+
+        // render X times per second
+        var x = 8;
+        setInterval(draw, 1000 / x);
+      };
+
+      // game world
+      var gridSize = (tileSize = 30); // 30 x 30 = 900
+      var nextX = (nextY = 0);
+
+      // snake
+      var defaultTailSize = 3;
+      var tailSize = defaultTailSize;
+      var snakeTrail = [];
+      var snakeX = (snakeY = 10);
+
+      // apple
+      var appleX = (appleY = 15);
+Function text (txt,fnt, x, y) {
+}
+Context fill.style = c;
+Context.front = fnt;
+context .fillText(text, x ,y);
+}
+      // draw
+      function draw() {
+        // move snake in next pos
+        snakeX += nextX;
+        snakeY += nextY;
+
+        // snake over game world?
+        if (snakeX < 0) {
+          snakeX = gridSize - 1;
+        }
+        if (snakeX > gridSize - 1) {
+          snakeX = 0;
+        }
+
+        if (snakeY < 0) {
+          snakeY = gridSize - 1;
+        }
+        if (snakeY > gridSize - 1) {
+          snakeY = 0;
+        }
+
+        //snake bite apple?
+        if (snakeX == appleX && snakeY == appleY) {
+          tailSize++;
+
+          appleX = Math.floor(Math.random() * gridSize);
+          appleY = Math.floor(Math.random() * gridSize);
+        }
+
+        //snake hits walls, game over
+
+/*   Not sure if this works
+
+  if (snakeX < 0 ) {
+alert(“Game Over!”)
+} else if (snakeX > canvas.width) {
+alert(“Game Over!”)
+} else if (snakeY < 0) {
+alert(“Game Over!”)
+} else if (snakeY > canvas.length) {
+alert(“Game Over!”)
+} else {
+};
+   */
+        //paint background
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // paint snake
+        ctx.fillStyle = "green";
+        for (var i = 0; i < snakeTrail.length; i++) {
+          ctx.fillRect(
+            snakeTrail[i].x * tileSize,
+            snakeTrail[i].y * tileSize,
+            tileSize,
+            tileSize
+          );
+
+          //snake bites its tail?
+          if (snakeTrail[i].x == snakeX && snakeTrail[i].y == snakeY) {
+            tailSize = defaultTailSize;
+          }
+        }
+
+        // paint apple
+        ctx.fillStyle = "red";
+        ctx.fillRect(appleX * tileSize, appleY * tileSize, tileSize, tileSize);
+
+        //set snake trail
+        snakeTrail.push({ x: snakeX, y: snakeY });
+        while (snakeTrail.length > tailSize) {
+          snakeTrail.shift();
+        }
+      }
+
+      // input
+      function keyDownEvent(e) {
+        switch (e.keyCode) {
+          case 37:
+            nextX = -1;
+            nextY = 0;
+            break;
+          case 38:
+            nextX = 0;
+            nextY = -1;
+            break;
+          case 39:
+            nextX = 1;
+            nextY = 0;
+            break;
+          case 40:
+            nextX = 0;
+            nextY = 1;
+            break;
+        }
+      }
+    </script>
+  </body>
+</html>
+
+    <canvas id="can" width="400" height="400" style="background: black"></canvas>
+
+    <script>
+
+        var score = -1
+        var snake = [42, 41];
+        var dz = 43;
+        var fx = 1;
+        var n;
+        var ctx = document.getElementById("can").getContext("2d");
+
+
+
+
+
+        function draw(t, c){
+            ctx.fillStyle = c;
+            ctx.fillRect(t % 20 * 20 + 1, ~~(t / 20) * 20 + 1, 18 , 18);
+        }
+
+        document.onkeydown = function (e){
+            fx = snake[1] - snake[0] == (n = [-1, -20, 1, 20][(e || event).keyCode - 37] || fx) ? fx :n
+        };
+        !function() {
+            snake.unshift(n = snake[0] + fx);
+
+            if (snake.indexOf(n, 1) > 0 || n < 0 || n > 399 || fx == 1 && n % 20 == 0 || fx == -1 && n % 20 == 19)
+                return alert("GAME OVER!");
+            draw(n, 'green');
+            if(n == dz) {
+                while(snake.indexOf(dz = ~~(Math.random() * 400)) >= 0);
+                draw(dz, 'red');
+                drawScore(); 
+                score++;
+            } else 
+                draw(snake.pop(), 'black');
+            setTimeout(arguments.callee, 150);
+
+
+        }();      
+
+
+    ctx.font = "18px Arial";
+    ctx.fillStyle = "White";
+    ctx.fillText("Score: ", 5, 20);
+
+
+
+
+        function drawScore() {
+    ctx.font = "18px Arial";
+    ctx.fillStyle = "White";
+    ctx.fillText(score,  75, 20);
+
+        }
+drawScore();
+
+
+
+
+
+    </script>
+</body>
+</html>
